@@ -97,3 +97,155 @@ button {
   height: var(--block-size);
   border: 0.1px solid var(--bg-color);
 }
+
+.setting-section {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.setting-section button {
+  margin: 0 10px;
+  color: var(--setting-btn-color);
+}
+
+i.bxs-moon {
+  display: block;
+}
+
+i.bxs-sun {
+  display: none;
+}
+
+.btn {
+  width: var(--button-size);
+  height: var(--button-size);
+  box-shadow: var(--btn-shadow);
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 30px;
+  color: var(--color);
+  border: none;
+  outline: none;
+  background-color: var(--bg-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn:active {
+  box-shadow: var(--btn-shadow-inset);
+}
+
+.control-section {
+  display: none;
+}
+
+.col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.col:nth-child(1) {
+  width: 60%;
+}
+
+.col:nth-child(2) {
+  width: 60%;
+}
+
+.arrow-control {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.btn-large {
+  width: 80px !important;
+  height: 80px !important;
+  font-size: 30px;
+}
+
+.menu-section {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.menu-section button {
+  margin-bottom: 30px;
+}
+
+.btn-width {
+  width: 200px;
+}
+
+.brand {
+  padding: 40px 0;
+  font-size: 25px;
+  color: var(--color);
+  text-align: center;
+}
+
+.result {
+  text-align: center;
+  margin-bottom: 90px;
+  display: none;
+}
+
+.result p {
+  color: var(--setting-btn-color);
+}
+
+.result h1 {
+  color: var(--color);
+  margin-bottom: 30px;
+}
+
+/* state */
+
+.board-section,
+.info-section,
+.control-section {
+  transform: scale(0);
+}
+
+#btn-new-game,
+#btn-pause {
+  display: none;
+}
+
+/* end state */
+
+@media only screen and (max-width: 425px) {
+  :root {
+    --block-size: 18px;
+  }
+
+  .game-wrapper {
+    box-shadow: unset;
+    border-radius: unset;
+    padding-bottom: 10px;
+  }
+
+  .control-section {
+    display: flex;
+  }
+
+  .setting-section {
+    position: absolute;
+    flex-direction: column;
+    bottom: unset;
+    top: 50%;
+    transform: translatey(-50%);
+    right: 2px;
+    padding: unset;
+  }
+
+  .setting-section button {
+    margin-bottom: 15px;
+  }
+}
