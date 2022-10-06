@@ -1,3 +1,57 @@
+let field = document.getElementsByClassName("block");
+// initial new game grid
+const newGrid = (width, height) => {
+  let grid = new Array(height);
+  for (let i = 0; i < height; i++) {
+    grid[i] = new Array(width);
+  }
+
+  let index = 0;
+  for (let i = 0; i < width; i++) {
+    for (let j = 0; j < width; j++) {
+      grid[i][j] = {
+        index: index++,
+        value: 0,
+      };
+    }
+  }
+
+  return {
+    board: grid,
+    width: width,
+    height: height,
+  };
+};
+
+let grid = newGrid(GRID_WIDTH, GRID_HEIGHT);
+
+// reset grid and field color
+
+const resetGrid = (grid) => {
+  for (let i = 0; i < grid.height; i++) {
+    for (let j = 0; j < grid.width; j++) {
+      grid.baord[i][j].value = 0;
+    }
+
+    // reset field background
+    Array.from(field).forEach((e) => {
+      e.style.background = TRANSPARENT;
+    });
+  }
+};
+// create new tetromino
+const newTetromino = (blocks, color, start_x, start_y) => {
+  let index = Math.floor(Math.random() * blocks.length);
+  return {
+    block: blocks[index],
+    color: color[index],
+    x: start_x,
+    y: start_y,
+  };
+};
+
+let tetromino = newTetromino(BLOCKS, COLORS, START_X, START_Y);
+
 let btns = document.querySelectorAll('[id*="btn-"]');
 
 btns.forEach((ele) => {
