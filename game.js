@@ -23,8 +23,6 @@ const newGrid = (width, height) => {
   };
 };
 
-let grid = newGrid(GRID_WIDTH, GRID_HEIGHT);
-
 // reset grid and field color
 
 const resetGrid = (grid) => {
@@ -40,17 +38,32 @@ const resetGrid = (grid) => {
   }
 };
 // create new tetromino
-const newTetromino = (blocks, color, start_x, start_y) => {
+const newTetromino = (blocks, colors, start_x, start_y) => {
   let index = Math.floor(Math.random() * blocks.length);
   return {
     block: blocks[index],
-    color: color[index],
+    color: colors[index],
     x: start_x,
     y: start_y,
   };
 };
 
-let tetromino = newTetromino(BLOCKS, COLORS, START_X, START_Y);
+const drawTetronimo = (tetronimo, grid) => {
+  tetronimo.block.forEach((row, i) => {
+    row.forEach((value, j) => {
+      let x = tetronimo.x + i;
+      let y = tetronimo.y + j;
+      if (value > 0) {
+        field[grid.board[x][y].index].style.background = tetronimo.color;
+      }
+    });
+  });
+};
+
+let grid = newGrid(GRID_WIDTH, GRID_HEIGHT);
+let tetronimo = newTetromino(BLOCKS, COLORS, START_X, START_Y);
+
+drawTetronimo(tetronimo, grid);
 
 let btns = document.querySelectorAll('[id*="btn-"]');
 
@@ -61,7 +74,7 @@ btns.forEach((ele) => {
     switch (btn_id) {
       case "btn-play":
         body.classList.add("play");
-        if (body.classList.contain("pause")) {
+        if (body.classList.contains("pause")) {
           body.classList.remove("pause");
         }
         break;
