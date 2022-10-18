@@ -76,11 +76,66 @@ const clearTetromino = (tetromino, grid) => {
   });
 };
 
-// check tetromino is moveable
+const isInGrid = (x, y, grid) => {
+  return x < grid.height && x >= 0 && y >= 0 && y < grid.width;
+};
 
+// check point is filled or blank
+const isFilled = (x, y, grid) => {
+  if (!isInGrid(x, y, grid)) {
+    return false;
+  } else {
+    return grid.board[x][y].value !== 0;
+  }
+};
+
+// check tetromino is movable?
+const movable = (tetromino, grid, direction) => {
+  let newX = tetromino.x;
+  let newY = tetromino.y;
+
+  switch (direction) {
+    case DIRECTION.DOWN:
+      newX = tetromino.x + 1;
+      break;
+    case DIRECTION.LEFT:
+      newY = tetromino.y - 1;
+      break;
+    case DIRECTION.RIGHT:
+      newY = tetromino.y + 1;
+      break;
+  }
+
+  return tetromino.block.every((row, i) => {
+    return row.every((value, j) => {
+      let x = newX + i;
+      let y = newY + j;
+      return value === 0 || (isInGrid(x, y, grid) && !isFilled(x, y, grid));
+    });
+  });
+};
+
+// move tetromino down
 const moveDown = (tetromino, grid) => {
+  if (!movable(tetromino, grid, DIRECTION.DOWN)) return;
   clearTetromino(tetromino, grid);
   tetromino.x++;
+  drawTetromino(tetromino, grid);
+};
+
+// move tetromino left
+const moveLeft = (tetromino, grid) => {
+  if (!movable(tetromino, grid, DIRECTION.LEFT)) return;
+  clearTetromino(tetromino, grid);
+  tetromino.y--;
+  drawTetromino(tetromino, grid);
+};
+
+// move tetromino right
+const moveRight = (tetromino, grid) => {
+  if (!movable(tetromino, grid, DIRECTION.RIGHT)) return;
+  clearTetromino(tetromino, grid);
+  tetromino.y++;
   drawTetromino(tetromino, grid);
 };
 
@@ -89,7 +144,9 @@ let tetromino = newTetromino(BLOCKS, COLORS, START_X, START_Y);
 
 drawTetromino(tetromino, grid);
 setInterval(() => {
-  moveDown(tetromino, grid);
+  if (movable(tetromino, grid, DIRECTION.DOWN)) {
+    moveDown(tetromino, grid);
+  }
 }, 500);
 
 let btns = document.querySelectorAll('[id*="btn-"]');
