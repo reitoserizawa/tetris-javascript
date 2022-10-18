@@ -1,4 +1,5 @@
 let field = document.getElementsByClassName("block");
+
 // initial new game grid
 const newGrid = (width, height) => {
   let grid = new Array(height);
@@ -7,7 +8,7 @@ const newGrid = (width, height) => {
   }
 
   let index = 0;
-  for (let i = 0; i < width; i++) {
+  for (let i = 0; i < height; i++) {
     for (let j = 0; j < width; j++) {
       grid[i][j] = {
         index: index++,
@@ -24,46 +25,72 @@ const newGrid = (width, height) => {
 };
 
 // reset grid and field color
-
 const resetGrid = (grid) => {
   for (let i = 0; i < grid.height; i++) {
+    // row
     for (let j = 0; j < grid.width; j++) {
-      grid.baord[i][j].value = 0;
+      // col
+      grid.board[i][j].value = 0;
     }
-
-    // reset field background
-    Array.from(field).forEach((e) => {
-      e.style.background = TRANSPARENT;
-    });
   }
+
+  // reset field background
+  Array.from(field).forEach((e) => {
+    e.style.background = TRANSPARENT;
+  });
 };
+
 // create new tetromino
 const newTetromino = (blocks, colors, start_x, start_y) => {
   let index = Math.floor(Math.random() * blocks.length);
   return {
-    block: blocks[index],
+    block: JSON.parse(JSON.stringify(blocks[index])),
     color: colors[index],
     x: start_x,
     y: start_y,
   };
 };
 
-const drawTetronimo = (tetronimo, grid) => {
-  tetronimo.block.forEach((row, i) => {
+const drawTetromino = (tetromino, grid) => {
+  tetromino.block.forEach((row, i) => {
     row.forEach((value, j) => {
-      let x = tetronimo.x + i;
-      let y = tetronimo.y + j;
+      let x = tetromino.x + i;
+      let y = tetromino.y + j;
       if (value > 0) {
-        field[grid.board[x][y].index].style.background = tetronimo.color;
+        field[grid.board[x][y].index].style.background = tetromino.color;
       }
     });
   });
 };
 
-let grid = newGrid(GRID_WIDTH, GRID_HEIGHT);
-let tetronimo = newTetromino(BLOCKS, COLORS, START_X, START_Y);
+// clear tetronomimp
+const clearTetromino = (tetromino, grid) => {
+  tetromino.block.forEach((row, i) => {
+    row.forEach((value, j) => {
+      let x = tetromino.x + i;
+      let y = tetromino.y + j;
+      if (value > 0) {
+        field[grid.board[x][y].index].style.background = TRANSPARENT;
+      }
+    });
+  });
+};
 
-drawTetronimo(tetronimo, grid);
+// check tetromino is moveable
+
+const moveDown = (tetromino, grid) => {
+  clearTetromino(tetromino, grid);
+  tetromino.x++;
+  drawTetromino(tetromino, grid);
+};
+
+let grid = newGrid(GRID_WIDTH, GRID_HEIGHT);
+let tetromino = newTetromino(BLOCKS, COLORS, START_X, START_Y);
+
+drawTetromino(tetromino, grid);
+setInterval(() => {
+  moveDown(tetromino, grid);
+}, 500);
 
 let btns = document.querySelectorAll('[id*="btn-"]');
 
