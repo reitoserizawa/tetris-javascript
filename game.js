@@ -143,11 +143,29 @@ let grid = newGrid(GRID_WIDTH, GRID_HEIGHT);
 let tetromino = newTetromino(BLOCKS, COLORS, START_X, START_Y);
 
 drawTetromino(tetromino, grid);
+
 setInterval(() => {
   if (movable(tetromino, grid, DIRECTION.DOWN)) {
     moveDown(tetromino, grid);
   }
 }, 500);
+
+// add keyboard event
+document.addEventListener("keydown", (e) => {
+  e.preventDefault();
+  let key = e.which;
+  switch (key) {
+    case KEY.DOWN:
+      moveDown(tetromino, grid);
+      break;
+    case KEY.LEFT:
+      moveLeft(tetromino, grid);
+      break;
+    case KEY.RIGHT:
+      moveRight(tetromino, grid);
+      break;
+  }
+});
 
 let btns = document.querySelectorAll('[id*="btn-"]');
 
@@ -156,6 +174,15 @@ btns.forEach((ele) => {
   let body = document.querySelector("body");
   ele.addEventListener("click", () => {
     switch (btn_id) {
+      case "btn-down":
+        moveDown(tetromino, grid);
+        break;
+      case "btn-left":
+        moveLeft(tetromino, grid);
+        break;
+      case "btn-right":
+        moveRight(tetromino, grid);
+        break;
       case "btn-play":
         body.classList.add("play");
         if (body.classList.contains("pause")) {
